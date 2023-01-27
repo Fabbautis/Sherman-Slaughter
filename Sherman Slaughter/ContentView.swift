@@ -19,12 +19,13 @@ struct ContentView : View {
 
 struct ARViewContainer: UIViewRepresentable {
     func makeUIView(context: Context) -> ARView {
+        @State var boxAnchor: Experience.Box;
         
         let arView = ARView(frame: .zero)
-        context.coordinator.view = arView
+        context.coordinator.arView = arView
         
         // Load the "Box" scene from the "Experience" Reality File
-        self.boxAnchor = try! Experience.loadBox()
+        boxAnchor = try! Experience.loadBox()
         
         // Add the box anchor to the scene
         arView.scene.anchors.append(boxAnchor)
@@ -56,9 +57,10 @@ class Coordinator:NSObject
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true){_ in
             if let data = motionManager.accelerometerData
             {
-                print(data.acceleration.x)
-                if(data.acceleration.x >= 0){
-                    self.boxAnchor.notifications.
+                print("Y value: " + String(data.acceleration.y))
+                if(data.acceleration.y <= -0.5){ //y is what you want to cast the fishing rod
+                    print("under -0.5")
+                    self.boxScene?.notifications.ajasaiaasdjasdadas
                 }
             }
         }
