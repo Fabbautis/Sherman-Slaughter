@@ -15,6 +15,7 @@
 		31FB88F629844AC9002C30B7 /* Sherman_SlaughterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FB88F529844AC9002C30B7 /* Sherman_SlaughterTests.swift */; };
 		31FB890029844AC9002C30B7 /* Sherman_SlaughterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FB88FF29844AC9002C30B7 /* Sherman_SlaughterUITests.swift */; };
 		31FB890229844AC9002C30B7 /* Sherman_SlaughterUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FB890129844AC9002C30B7 /* Sherman_SlaughterUITestsLaunchTests.swift */; };
+		31FB891029844D58002C30B7 /* Accelerometer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FB890F29844D58002C30B7 /* Accelerometer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		31FB88FB29844AC9002C30B7 /* Sherman SlaughterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Sherman SlaughterUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31FB88FF29844AC9002C30B7 /* Sherman_SlaughterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sherman_SlaughterUITests.swift; sourceTree = "<group>"; };
 		31FB890129844AC9002C30B7 /* Sherman_SlaughterUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sherman_SlaughterUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		31FB890F29844D58002C30B7 /* Accelerometer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accelerometer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 			children = (
 				31FB88E229844AC7002C30B7 /* AppDelegate.swift */,
 				31FB88E429844AC7002C30B7 /* ContentView.swift */,
+				31FB890E29844D3B002C30B7 /* Code */,
 				31FB88E629844AC7002C30B7 /* Experience.rcproject */,
 				31FB88E829844AC8002C30B7 /* Assets.xcassets */,
 				31FB88EA29844AC8002C30B7 /* Preview Content */,
@@ -128,6 +131,14 @@
 				31FB890129844AC9002C30B7 /* Sherman_SlaughterUITestsLaunchTests.swift */,
 			);
 			path = "Sherman SlaughterUITests";
+			sourceTree = "<group>";
+		};
+		31FB890E29844D3B002C30B7 /* Code */ = {
+			isa = PBXGroup;
+			children = (
+				31FB890F29844D58002C30B7 /* Accelerometer.swift */,
+			);
+			path = Code;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -261,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				31FB88E529844AC7002C30B7 /* ContentView.swift in Sources */,
+				31FB891029844D58002C30B7 /* Accelerometer.swift in Sources */,
 				31FB88E329844AC7002C30B7 /* AppDelegate.swift in Sources */,
 				31FB88E729844AC7002C30B7 /* Experience.rcproject in Sources */,
 			);
