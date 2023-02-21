@@ -10,6 +10,7 @@ import RealityKit
 import CoreMotion
 
 
+
 struct ContentView : View {
     
     var body: some View {
@@ -45,18 +46,23 @@ struct ARViewContainer: UIViewRepresentable { //Create the entire AR view with t
 
 class Coordinator:NSObject
 {
-    var canReel: Bool
+    //ContentView().environmentObject(yourEnvironmentObject) https://www.hackingwithswift.com/quick-start/swiftui/how-to-fix-fatal-error-no-observableobject-of-type-sometype-found
+    @EnvironmentObject var data:Data
     weak var arView:ARView?
     weak var boxScene: Experience.Box?
+    var canReel:Bool = false;
+    var xRot:Double = 0;
+    var yRot:Double = 0;
     var zRot:Double = 0
-    var totalTime: Double = 0
-    let howLongToWait:Double = 5
     var waitTimerStart: Double = 0;
+    var startedRotation: Double = 0;
+    var randomChange = Double.random(in: -0.3...0.3)
+    
     
     override init(){
-        self.canReel = false;
         super.init()
         self.handleAccelerometer()
+        
     }
 
     func handleAccelerometer () { //create the accelerometer and get the x y and z rotations
@@ -66,30 +72,66 @@ class Coordinator:NSObject
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true){_ in
             if let data = motionManager.accelerometerData
             {
+                self.xRot = data.acceleration.x
+                self.yRot = data.acceleration.y
                 self.zRot = data.acceleration.z
-                self.checkRotations()
+                if (self.canReel){
+                    self.reeling()
+                }
             }
         }
     }
     
-    func checkRotations() {
-        print("Z value: " + String(zRot))
-        if zRot <= -0.5 && canReel { //z is what you want to cast the fishing rod
-            self.boxScene?.notifications.rotate360.post()
-        }
+    func checkRotations() -> (zRot: String, yRot: String, xRot:String) {
+        return (zRot: String(zRot), yRot: String(yRot), xRot: String(xRot))//Return of Multiple Values from a Function
     }
     
-    func endStartAnim (_ entity: Entity?) {
+    func endStartAnim (_ entity: Entity?) { //this also starts the game by establishing predetermined values to shoot for
         guard let entity = entity else {return}
         
-        canReel = true;
+        
+        if ((zRot >= 0.7 && randomChange > 0) || (zRot <= -0.7 && randomChange < 0)){
+            randomChange = randomChange * -1 //ensure that you can actually rotate your phone to that angle
+        }
+        startedRotation = zRot; //What rotation does the game go based off to calculate the goal
+        canReel = true; //start the game
     }
     
     func reeling() {
-        var currentZRot:Double = zRot;
-        //some kind of 5 second timer
-        if zRot >= currentZRot - 5 && zRot <= currentZRot + 5 {
-            
+        let currentRotation = (Double(checkRotations().zRot) ?? zRot)
+        
+        print(currentRotation, randomChange, "Go for " + String(randomChange + startedRotation))
+        
+        if currentRotation <= (startedRotation + randomChange) - 0.1 {
+            self.boxScene?.notifications.tooHigh.post()
+        } else if currentRotation >= (startedRotation + randomChange) + 0.1{
+            self.boxScene?.notifications.tooLow.post()
+        } else if currentRotation <= (startedRotation + randomChange) + 0.1 && currentRotation >= (startedRotation + randomChange) - 0.1 {
+            self.boxScene?.notifications.justRight.post()
+            endGame(gameState: true)
+            return
+        }
+        endGame(gameState: false)
+    }
+    func endGame (gameState: Bool){//Customized Parameter Labels
+        if (!gameState){
+            return
+        } else{
+            self.boxScene?.notifications.rotate360.post()
+            canReel = false;
+            let randomColor = Int.random(in:1...3)
+            let randomWeight = Int.random(in:5...40)
+            switch (randomColor){
+                case 1:
+                    data.fishCaughtColor.append("red")
+                case 2:
+                    data.fishCaughtColor.append("blue")
+                case 3:
+                    data.fishCaughtColor.append("green")
+                default:
+                    data.fishCaughtColor.append("red")
+            }
+            data.fishCaughtWeight.append(String(randomWeight))
         }
     }
 }

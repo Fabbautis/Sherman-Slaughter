@@ -20,12 +20,21 @@ struct inventoryView: View {
                     .padding(20)
                 ScrollView(.horizontal,showsIndicators:false){
                     HStack{
-                        ForEach(data.fishCaught, id: \.self) { fish in
+                        ForEach(Array(data.fishCaughtColor.enumerated()), id: \.offset) { index, fish in
                             VStack{
                                 Image(fish + " fish")
                                     .resizable()
                                     .frame(width: 150, height: 150)
-                                Text(String(Int.random(in:5...40)) + " pounds")
+                                switch (data.age){
+                                    case "":
+                                        Text("Set your age!")
+                                    case "0":
+                                        Text("Too young")
+                                    case "99", "999":
+                                        Text("Too old")
+                                    default:
+                                        Text(data.fishCaughtWeight[index] + " pounds")
+                                }
                             }
                         }
                     }

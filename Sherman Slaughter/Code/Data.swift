@@ -13,5 +13,7 @@ class Data:ObservableObject
     @Published var username: String?
     @Published var favColor: Color = Color(.sRGB, red: 0.98, green: 0.9, blue: 0.2)
     @Published var age: String?
-    @Published var fishCaught: [String] = ["green", "red", "blue", "green", "blue"]
+    @Published var fishCaughtColor: [String] = ["green", "red", "blue", "green", "blue"]
+    @Published var fishCaughtWeight: [String] = ["23", "7", "13", "39", "10"]
+
 }
