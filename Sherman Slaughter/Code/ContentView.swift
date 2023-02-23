@@ -12,13 +12,18 @@ import CoreMotion
 
 
 struct ContentView : View {
-    
+    @EnvironmentObject var data:Data
     var body: some View {
         ARViewContainer().edgesIgnoringSafeArea(.all)
+            .environmentObject(data)
+            .onDisappear(){
+                print("Please get rid of the Box anchor and reload it")
+            }
     }
 }
 
 struct ARViewContainer: UIViewRepresentable { //Create the entire AR view with the box and all that. This does not create the code, that is done later
+    @EnvironmentObject var data:Data
     func makeUIView(context: Context) -> ARView {
         @State var boxAnchor: Experience.Box;
         
@@ -32,6 +37,7 @@ struct ARViewContainer: UIViewRepresentable { //Create the entire AR view with t
         
         // Add the box anchor to the scene
         arView.scene.anchors.append(boxAnchor)
+        context.coordinator.handleAccelerometer()
         
         return arView
         
@@ -39,9 +45,8 @@ struct ARViewContainer: UIViewRepresentable { //Create the entire AR view with t
     
     func updateUIView(_ uiView: ARView, context: Context) {}
     func makeCoordinator() -> Coordinator {
-        Coordinator()
+        Coordinator(self)
     }
-    
 }
 
 class Coordinator:NSObject
@@ -54,15 +59,14 @@ class Coordinator:NSObject
     var xRot:Double = 0;
     var yRot:Double = 0;
     var zRot:Double = 0
-    var waitTimerStart: Double = 0;
+    let waitTimerStart: Double = 0;//Use of constants in variable construction
     var startedRotation: Double = 0;
     var randomChange = Double.random(in: -0.3...0.3)
+    var parent:ARViewContainer
     
-    
-    override init(){
-        super.init()
-        self.handleAccelerometer()
-        
+    init(_ parent:ARViewContainer){
+        //super.init()
+        self.parent = parent
     }
 
     func handleAccelerometer () { //create the accelerometer and get the x y and z rotations
@@ -97,10 +101,8 @@ class Coordinator:NSObject
         canReel = true; //start the game
     }
     
-    func reeling() {
+    func reeling(using rotation:checkRotations()) {
         let currentRotation = (Double(checkRotations().zRot) ?? zRot)
-        
-        print(currentRotation, randomChange, "Go for " + String(randomChange + startedRotation))
         
         if currentRotation <= (startedRotation + randomChange) - 0.1 {
             self.boxScene?.notifications.tooHigh.post()
@@ -121,17 +123,17 @@ class Coordinator:NSObject
             canReel = false;
             let randomColor = Int.random(in:1...3)
             let randomWeight = Int.random(in:5...40)
-            switch (randomColor){
+            switch (randomColor){ //use of switch statements
                 case 1:
-                    data.fishCaughtColor.append("red")
+                parent.data.fishCaughtColor.append("red")
                 case 2:
-                    data.fishCaughtColor.append("blue")
+                parent.data.fishCaughtColor.append("blue")
                 case 3:
-                    data.fishCaughtColor.append("green")
+                parent.data.fishCaughtColor.append("green")
                 default:
-                    data.fishCaughtColor.append("red")
+                parent.data.fishCaughtColor.append("red")
             }
-            data.fishCaughtWeight.append(String(randomWeight))
+            parent.data.fishCaughtWeight.append(String(randomWeight))
         }
     }
 }

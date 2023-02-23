@@ -14,13 +14,13 @@ struct inventoryView: View {
         ZStack{
             VStack{
                 VStack{
-                    Text("Welcome " + (data.username ?? "User"))
+                    Text("Welcome " + (data.username ?? "User")) //Reading of text from textfield
                     Text("Fish Caught")
                 }
                     .padding(20)
                 ScrollView(.horizontal,showsIndicators:false){
                     HStack{
-                        ForEach(Array(data.fishCaughtColor.enumerated()), id: \.offset) { index, fish in
+                        ForEach(Array(data.fishCaughtColor.enumerated()), id: \.offset) { index, fish in //Creation of Views in a loop
                             VStack{
                                 Image(fish + " fish")
                                     .resizable()
@@ -33,7 +33,7 @@ struct inventoryView: View {
                                     case "99", "999":
                                         Text("Too old")
                                     default:
-                                        Text(data.fishCaughtWeight[index] + " pounds")
+                                        Text(data.fishCaughtWeight[index] + " pounds") //Joining of strings
                                 }
                             }
                         }
