@@ -101,7 +101,7 @@ class Coordinator:NSObject
         canReel = true; //start the game
     }
     
-    func reeling(using rotation:checkRotations()) {
+    func reeling() {
         let currentRotation = (Double(checkRotations().zRot) ?? zRot)
         
         if currentRotation <= (startedRotation + randomChange) - 0.1 {
@@ -134,7 +134,15 @@ class Coordinator:NSObject
                 parent.data.fishCaughtColor.append("red")
             }
             parent.data.fishCaughtWeight.append(String(randomWeight))
+            iDontUnderstandFunctionParameters(using: iDontUnderstandFunctionExample)
         }
+    }
+    func iDontUnderstandFunctionExample() -> Int{ //Using function as parameter
+        let smellyNumber:Int = Int.random(in: 10...30)
+        return smellyNumber
+    }
+    func iDontUnderstandFunctionParameters(using randomizedNumber:() ->Int){
+        print (randomizedNumber())
     }
 }
 
